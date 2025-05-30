@@ -1,5 +1,6 @@
 import React from 'react';
 import { Story } from '@/lib/types';
+import { useDefaultCover } from '@/lib/hooks/use-default-cover';
 
 interface StoryCardProps {
   story: Story;
@@ -8,14 +9,16 @@ interface StoryCardProps {
 }
 
 const StoryCard: React.FC<StoryCardProps> = ({ story, status, progress }) => {
+  const { defaultCoverUrl } = useDefaultCover();
+  
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
       <img
-        src={story.coverImage || "/cover.png"}
+        src={story.coverImage || defaultCoverUrl}
         alt={`Cover for ${story.title}`}
         className="w-full aspect-[2/3] object-cover"
         onError={(e) => {
-          e.currentTarget.src = '/placeholder.jpg';
+          e.currentTarget.src = defaultCoverUrl;
         }}
       />
       <div className="p-4">

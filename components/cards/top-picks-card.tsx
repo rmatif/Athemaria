@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Story } from '@/lib/types';
+import { useDefaultCover } from '@/lib/hooks/use-default-cover';
 
 interface TopPicksCardProps {
   type: 'multi-cover' | 'month-highlight' | 'icon-highlight';
@@ -25,6 +26,7 @@ const TopPicksCard: React.FC<TopPicksCardProps> = ({
   textColor,
   iconBgColor,
 }) => {
+  const { defaultCoverUrl } = useDefaultCover();
   if (type === 'multi-cover') {
     // Use story data if available, otherwise fallback to static props or generic text
     const displayTitle = story?.title || staticTitle || "Featured Collection";
@@ -35,10 +37,10 @@ const TopPicksCard: React.FC<TopPicksCardProps> = ({
     return (
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="grid grid-cols-2 gap-2 mb-4">
-          <img src={story?.coverImage || "/assets/cover.png"} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
-          <img src={story?.coverImage || "/assets/cover.png"} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
-          <img src={story?.coverImage || "/assets/cover.png"} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
-          <img src={story?.coverImage || "/assets/cover.png"} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
+          <img src={story?.coverImage || defaultCoverUrl} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
+          <img src={story?.coverImage || defaultCoverUrl} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
+          <img src={story?.coverImage || defaultCoverUrl} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
+          <img src={story?.coverImage || defaultCoverUrl} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
         </div>
         <h3 className="font-semibold text-lg text-gray-900 mb-1">{displayTitle}</h3>
         <p className="text-sm text-gray-600">{truncatedDescription}</p>
