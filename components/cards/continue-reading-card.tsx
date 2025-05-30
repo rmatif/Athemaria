@@ -50,7 +50,11 @@ const ContinueReadingCard: React.FC<ContinueReadingCardProps> = ({
       <Link href={`/story/${story.id}`}>
         <div className="block hover:no-underline focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-lg transition-shadow hover:shadow-xl bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center h-full">
           <div className="relative mr-4">
-            <img src="https://i.postimg.cc/W3S2PT7P/fa04045a-41fe-4adc-bc0e-8013788873b8.png" alt={story.title} className="w-24 h-36 object-cover rounded-lg" />
+            <img
+              src={story.coverImage || "/assets/cover.png"}
+              alt={`Cover for ${story.title}`}
+              className="w-24 h-36 object-cover rounded-lg"
+            />
             {user && (
               <button
                 onClick={handleFavoriteClick}

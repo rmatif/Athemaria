@@ -29,6 +29,7 @@ export default function WritePage() {
   // New state variables for story metadata
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [coverImage, setCoverImage] = useState<string>("");
   const [storyGenres, setStoryGenres] = useState<string[]>([]); // Holds the actual story genres
   const [storyTags, setStoryTags] = useState<string[]>([]);   // Holds the actual story tags
 
@@ -54,6 +55,7 @@ export default function WritePage() {
 
             setTitle(loadedStory.title || "");
             setDescription(loadedStory.description || "");
+            setCoverImage(loadedStory.coverImage || "");
             const currentGenres = loadedStory.genres || [];
             setStoryGenres(currentGenres);
             setGenre1(currentGenres[0] || "");
@@ -97,6 +99,7 @@ export default function WritePage() {
         const pendingStoryData = JSON.parse(pendingStoryString);
         setTitle(pendingStoryData.title || "");
         setDescription(pendingStoryData.description || "");
+        setCoverImage(pendingStoryData.coverImage || "");
         const currentGenres = pendingStoryData.genres || [];
         setStoryGenres(currentGenres);
         setGenre1(currentGenres[0] || "");
@@ -177,6 +180,7 @@ export default function WritePage() {
           chapters: chaptersWithTitles,
           status,
           updatedAt: new Date().toISOString(),
+          coverImage: coverImage || "/assets/cover.png",
         };
         await updateStory(storyId, storyUpdateData);
       } else {
@@ -191,6 +195,7 @@ export default function WritePage() {
           authorId: user.uid,
           authorName: user.displayName || "Anonymous",
           createdAt: new Date().toISOString(),
+          coverImage: coverImage || "/assets/cover.png",
         };
         newStoryId = await createStory(newStoryData); // createStory should return the new ID
       }
@@ -333,6 +338,21 @@ export default function WritePage() {
                     placeholder="e.g., magic, space opera, high school"
                     className="rounded-xl border-amber-200/50 dark:border-amber-800/50 bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl text-foreground"
                   />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="coverImageInput" className="text-sm font-medium text-amber-900 dark:text-amber-100">Cover Image (Optional)</Label>
+                  <Input
+                    id="coverImageInput"
+                    type="url"
+                    value={coverImage}
+                    onChange={(e) => setCoverImage(e.target.value)}
+                    placeholder="Enter image URL or leave empty for default cover"
+                    className="rounded-xl border-amber-200/50 dark:border-amber-800/50 bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl text-foreground"
+                  />
+                  <p className="text-xs text-amber-700/70 dark:text-amber-300/70">
+                    If no image is provided, a default cover will be used.
+                  </p>
                 </div>
               </div>
 

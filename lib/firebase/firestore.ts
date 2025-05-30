@@ -33,7 +33,7 @@ export async function createStory(storyData: StoryInput): Promise<string> {
     const dataToSave = {
       ...storyData,
       chapters: storyData.chapters || [],
-      coverImage: storyData.coverImage || "/placeholder.jpg", // Changed default path
+      coverImage: storyData.coverImage || "/assets/cover.png", // Use correct default cover image
     };
     const docRef = await addDoc(collection(db, "stories"), dataToSave);
     return docRef.id;
@@ -235,7 +235,7 @@ export async function getUserStories(userId: string): Promise<UserStory[]> {
       userStories.push({
         id: docSnap.id,
         title: data.title,
-        imageUrl: (data.coverImage === "assets/cover.png" || !data.coverImage) ? "https://i.postimg.cc/W3S2PT7P/fa04045a-41fe-4adc-bc0e-8013788873b8.png" : data.coverImage, // Use external placeholder
+        imageUrl: data.coverImage || "/assets/cover.png", // Use story's cover image or default
         commentCount: commentCount,
         averageRating: averageRating,
       });

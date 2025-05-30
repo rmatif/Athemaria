@@ -77,7 +77,11 @@ const BookRecommendationCard: React.FC<BookRecommendationCardProps> = ({
     <div className="relative group">
       <Link href={`/story/${story.id}`} className="block hover:no-underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg transition-shadow hover:shadow-xl">
         <Card className="rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
-          <img src="https://i.postimg.cc/W3S2PT7P/fa04045a-41fe-4adc-bc0e-8013788873b8.png" alt={story.title} className="w-full aspect-[2/3] object-cover" />
+          <img
+            src={story.coverImage || "/assets/cover.png"}
+            alt={`Cover for ${story.title}`}
+            className="w-full aspect-[2/3] object-cover"
+          />
           <CardContent className="p-3">
             <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200 truncate">{story.title}</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">{story.authorName}</p>

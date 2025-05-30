@@ -1,14 +1,20 @@
 import React from 'react';
+import { Story } from '@/lib/types';
 
 interface StoryCardProps {
-  status: 'nouveau' | 'in-progress' | 'termine';
+  story: Story;
+  status?: 'nouveau' | 'in-progress' | 'termine';
   progress?: number; // Optional, 0-100
 }
 
-const StoryCard: React.FC<StoryCardProps> = ({ status, progress }) => {
+const StoryCard: React.FC<StoryCardProps> = ({ story, status, progress }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
-      <img src="https://i.postimg.cc/W3S2PT7P/fa04045a-41fe-4adc-bc0e-8013788873b8.png" alt="Default story cover" className="w-full aspect-[2/3] object-cover" />
+      <img
+        src={story.coverImage || "/assets/cover.png"}
+        alt={`Cover for ${story.title}`}
+        className="w-full aspect-[2/3] object-cover"
+      />
       <div className="p-4">
         {status === 'nouveau' && (
           <div className="flex items-center justify-between">

@@ -23,6 +23,7 @@ export default function CreateStoryPage() {
   const [genre2, setGenre2] = useState("");
   const [genre3, setGenre3] = useState("");
   const [tags, setTags] = useState("");
+  const [coverImage, setCoverImage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,6 +61,7 @@ export default function CreateStoryPage() {
         genres: selectedGenres, // Use the new genres array
         tags: processedTags,    // Add the processed tags
         status: "draft" as const,
+        coverImage: coverImage || "/assets/cover.png", // Use default if no image selected
       })
     );
 
@@ -217,6 +219,26 @@ export default function CreateStoryPage() {
                       className="min-h-[100px] rounded-xl border-amber-200/50 dark:border-amber-800/50 bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl transition-colors focus:border-amber-500/50 dark:focus:border-amber-500/50"
                       required
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="coverImage"
+                      className="text-sm font-medium text-amber-900 dark:text-amber-100"
+                    >
+                      Cover Image (Optional)
+                    </Label>
+                    <Input
+                      id="coverImage"
+                      type="url"
+                      value={coverImage}
+                      onChange={(e) => setCoverImage(e.target.value)}
+                      placeholder="Enter image URL or leave empty for default cover"
+                      className="rounded-xl border-amber-200/50 dark:border-amber-800/50 bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl transition-colors focus:border-amber-500/50 dark:focus:border-amber-500/50"
+                    />
+                    <p className="text-xs text-amber-700/70 dark:text-amber-300/70">
+                      If no image is provided, a default cover will be used.
+                    </p>
                   </div>
 
                   <Button

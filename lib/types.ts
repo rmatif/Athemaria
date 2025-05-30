@@ -43,6 +43,7 @@ export interface StoryUpdate {
   tags?: string[];
   status?: StoryStatus;
   updatedAt: string;
+  coverImage?: string;
 }
 
 export interface UserStory {

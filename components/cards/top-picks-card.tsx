@@ -35,10 +35,10 @@ const TopPicksCard: React.FC<TopPicksCardProps> = ({
     return (
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="grid grid-cols-2 gap-2 mb-4">
-          <img src="https://i.postimg.cc/W3S2PT7P/fa04045a-41fe-4adc-bc0e-8013788873b8.png" alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
-          <img src="https://i.postimg.cc/W3S2PT7P/fa04045a-41fe-4adc-bc0e-8013788873b8.png" alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
-          <img src="https://i.postimg.cc/W3S2PT7P/fa04045a-41fe-4adc-bc0e-8013788873b8.png" alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
-          <img src="https://i.postimg.cc/W3S2PT7P/fa04045a-41fe-4adc-bc0e-8013788873b8.png" alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
+          <img src={story?.coverImage || "/assets/cover.png"} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
+          <img src={story?.coverImage || "/assets/cover.png"} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
+          <img src={story?.coverImage || "/assets/cover.png"} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
+          <img src={story?.coverImage || "/assets/cover.png"} alt={displayTitle} className="rounded w-full aspect-[2/3] object-cover" />
         </div>
         <h3 className="font-semibold text-lg text-gray-900 mb-1">{displayTitle}</h3>
         <p className="text-sm text-gray-600">{truncatedDescription}</p>
