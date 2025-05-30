@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlertCircle, BookOpen } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import AuthCheck from "@/components/auth-check";
+import { getDefaultCoverUrlSync } from "@/lib/hooks/use-default-cover";
 
 export default function CreateStoryPage() {
   const [title, setTitle] = useState("");
@@ -61,7 +62,7 @@ export default function CreateStoryPage() {
         genres: selectedGenres, // Use the new genres array
         tags: processedTags,    // Add the processed tags
         status: "draft" as const,
-        coverImage: coverImage || "/assets/cover.png", // Use default if no image selected
+        coverImage: coverImage || getDefaultCoverUrlSync(), // Use Firebase-hosted default if no image selected
       })
     );
 
