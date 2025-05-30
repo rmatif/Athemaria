@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-serif: Georgia, "Times New Roman", serif;
+    --background: 43 96% 98%; /* warm white */
+    --foreground: 32 40% 20%; /* warm black */
+    --card: 0 0% 100%;
+    --card-foreground: 32 40% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 32 40% 20%;
+    --primary: 32 40% 20%;
+    --primary-foreground: 43 96% 98%;
+    --secondary: 43 36% 92%;
+    --secondary-foreground: 32 40% 20%;
+    --muted: 43 36% 92%;
+    --muted-foreground: 32 40% 60%;
+    --accent: 43 36% 92%;
+    --accent-foreground: 32 40% 20%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 43 36% 85%;
+    --input: 43 36% 85%;
+    --ring: 32 40% 20%;
+  }
+
+  .dark {
+    --background: 24 30% 8%; /* warm dark */
+    --foreground: 43 36% 92%; /* warm light */
+    --card: 24 30% 8%;
+    --card-foreground: 43 36% 92%;
+    --popover: 24 30% 8%;
+    --popover-foreground: 43 36% 92%;
+    --primary: 43 36% 92%;
+    --primary-foreground: 24 30% 8%;
+    --secondary: 24 30% 15%;
+    --secondary-foreground: 43 36% 92%;
+    --muted: 24 30% 15%;
+    --muted-foreground: 43 36% 60%;
+    --accent: 24 30% 15%;
+    --accent-foreground: 43 36% 92%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 24 30% 15%;
+    --input: 24 30% 15%;
+    --ring: 43 36% 92%;
+  }
+
+  html {
+    font-feature-settings: "rlig" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* font-family is now handled by Tailwind's font-sans class using Inter via next/font */
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+    to bottom,
+    rgba(251, 243, 227, 0.5),
+    rgba(255, 255, 255, 1)
+  );
+  letter-spacing: -0.025em;
+}
+
+.dark body {
+  background: linear-gradient(
+    to bottom,
+    rgba(120, 53, 15, 0.05),
+    rgba(23, 23, 23, 1)
+  );
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif);
+}
+
+/* Links */
+a {
+  transition: color 0.2s ease;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(251, 243, 227, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(146, 64, 14, 0.2);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(146, 64, 14, 0.3);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(23, 23, 23, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(251, 146, 60, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 146, 60, 0.3);
+}
+
+/* Text Selection */
+::selection {
+  background: rgba(146, 64, 14, 0.2);
+  color: inherit;
+}
+
+.dark ::selection {
+  background: rgba(251, 146, 60, 0.2);
+  color: inherit;
+}
+
+/* Paper texture effect */
+.bg-paper {
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  background-position: 0 0;
+  background-size: 150px 150px;
+}
+
+/* Reading styles */
+.prose {
+  font-family: var(--font-serif);
+  line-height: 1.75;
+}
+
+.prose p {
+  margin-bottom: 1.5em;
+}
