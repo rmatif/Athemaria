@@ -51,9 +51,12 @@ const ContinueReadingCard: React.FC<ContinueReadingCardProps> = ({
         <div className="block hover:no-underline focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-lg transition-shadow hover:shadow-xl bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center h-full">
           <div className="relative mr-4">
             <img
-              src={story.coverImage || "/assets/cover.png"}
+              src={story.coverImage || "/cover.png"}
               alt={`Cover for ${story.title}`}
               className="w-24 h-36 object-cover rounded-lg"
+              onError={(e) => {
+                e.currentTarget.src = '/placeholder.jpg';
+              }}
             />
             {user && (
               <button

@@ -11,9 +11,12 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, status, progress }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
       <img
-        src={story.coverImage || "/assets/cover.png"}
+        src={story.coverImage || "/cover.png"}
         alt={`Cover for ${story.title}`}
         className="w-full aspect-[2/3] object-cover"
+        onError={(e) => {
+          e.currentTarget.src = '/placeholder.jpg';
+        }}
       />
       <div className="p-4">
         {status === 'nouveau' && (

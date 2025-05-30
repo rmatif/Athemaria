@@ -78,9 +78,12 @@ const BookRecommendationCard: React.FC<BookRecommendationCardProps> = ({
       <Link href={`/story/${story.id}`} className="block hover:no-underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg transition-shadow hover:shadow-xl">
         <Card className="rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
           <img
-            src={story.coverImage || "/assets/cover.png"}
+            src={story.coverImage || "/cover.png"}
             alt={`Cover for ${story.title}`}
             className="w-full aspect-[2/3] object-cover"
+            onError={(e) => {
+              e.currentTarget.src = '/placeholder.jpg';
+            }}
           />
           <CardContent className="p-3">
             <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200 truncate">{story.title}</h3>
