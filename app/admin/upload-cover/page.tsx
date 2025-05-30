@@ -13,32 +13,48 @@ export default function UploadCoverPage() {
     url?: string;
     error?: string;
   } | null>(null);
+  const [debugLogs, setDebugLogs] = useState<string[]>([]);
+
+  const addLog = (message: string) => {
+    console.log(message);
+    setDebugLogs(prev => [...prev, `${new Date().toLocaleTimeString()}: ${message}`]);
+  };
 
   const handleUploadFromAssets = async () => {
     setIsUploading(true);
     setUploadResult(null);
+    setDebugLogs([]);
 
     try {
+      addLog('Starting upload from public folder...');
+      
       // Fetch the cover.png from the public folder
+      addLog('Fetching /cover.png from public folder...');
       const response = await fetch('/cover.png');
       if (!response.ok) {
-        throw new Error('Could not fetch cover.png from public folder');
+        throw new Error(`Could not fetch cover.png from public folder. Status: ${response.status}`);
       }
 
+      addLog('Converting to file...');
       const blob = await response.blob();
       const file = new File([blob], 'cover.png', { type: 'image/png' });
+      addLog(`File created: ${file.name}, size: ${file.size} bytes`);
 
+      addLog('Uploading to Firebase Storage...');
       const downloadURL = await uploadDefaultCover(file);
+      addLog(`Upload successful! URL: ${downloadURL}`);
       
       setUploadResult({
         success: true,
         url: downloadURL
       });
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      addLog(`Upload failed: ${errorMessage}`);
       console.error('Upload failed:', error);
       setUploadResult({
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: errorMessage
       });
     } finally {
       setIsUploading(false);
@@ -51,19 +67,28 @@ export default function UploadCoverPage() {
 
     setIsUploading(true);
     setUploadResult(null);
+    setDebugLogs([]);
 
     try {
+      addLog(`Starting file upload: ${file.name}`);
+      addLog(`File size: ${file.size} bytes`);
+      addLog(`File type: ${file.type}`);
+      
+      addLog('Uploading to Firebase Storage...');
       const downloadURL = await uploadDefaultCover(file);
+      addLog(`Upload successful! URL: ${downloadURL}`);
       
       setUploadResult({
         success: true,
         url: downloadURL
       });
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      addLog(`Upload failed: ${errorMessage}`);
       console.error('Upload failed:', error);
       setUploadResult({
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: errorMessage
       });
     } finally {
       setIsUploading(false);
@@ -148,6 +173,48 @@ export default function UploadCoverPage() {
               </AlertDescription>
             </Alert>
           )}
+
+          {debugLogs.length > 0 && (
+            <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                Debug Logs
+              </h3>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1 max-h-40 overflow-y-auto">
+                {debugLogs.map((log, index) => (
+                  <div key={index} className="font-mono text-xs">
+                    {log}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+            <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+              🔧 Firebase Setup Required
+            </h3>
+            <div className="text-sm text-yellow-700 dark:text-yellow-300 space-y-2">
+              <p><strong>If upload fails, you need to configure Firebase Storage:</strong></p>
+              <ol className="list-decimal list-inside space-y-1 ml-4">
+                <li>Go to <a href="https://console.firebase.google.com" target="_blank" className="underline">Firebase Console</a></li>
+                <li>Select your project: <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">writereadhub</code></li>
+                <li>Navigate to <strong>Storage</strong> in the left sidebar</li>
+                <li>Click <strong>"Get started"</strong> if Storage isn't enabled</li>
+                <li>Update Storage Rules to allow uploads:</li>
+              </ol>
+              <div className="mt-2 p-2 bg-yellow-100 dark:bg-yellow-800 rounded font-mono text-xs">
+                {`rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}`}
+              </div>
+              <p className="text-xs mt-2">⚠️ This allows public access. For production, add proper authentication rules.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

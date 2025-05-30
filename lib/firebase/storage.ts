@@ -1,7 +1,17 @@
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { app } from './config';
 
-export const storage = getStorage(app);
+// Initialize Firebase Storage with error handling
+let storage: any;
+try {
+  storage = getStorage(app);
+  console.log('Firebase Storage initialized successfully');
+} catch (error) {
+  console.error('Failed to initialize Firebase Storage:', error);
+  throw new Error('Firebase Storage initialization failed. Check your configuration.');
+}
+
+export { storage };
 
 // Default placeholder cover image URL (will be set after uploading to Firebase)
 export const DEFAULT_COVER_URL = 'https://firebasestorage.googleapis.com/v0/b/your-project-id/o/placeholders%2Fcover.png?alt=media';
@@ -14,13 +24,41 @@ export const DEFAULT_COVER_URL = 'https://firebasestorage.googleapis.com/v0/b/yo
  */
 export async function uploadFile(file: File, path: string): Promise<string> {
   try {
+    console.log(`Attempting to upload file to path: ${path}`);
+    console.log(`File details: name=${file.name}, size=${file.size}, type=${file.type}`);
+    
+    if (!storage) {
+      throw new Error('Firebase Storage not initialized');
+    }
+    
     const storageRef = ref(storage, path);
+    console.log('Storage reference created, starting upload...');
+    
     const snapshot = await uploadBytes(storageRef, file);
+    console.log('Upload completed, getting download URL...');
+    
     const downloadURL = await getDownloadURL(snapshot.ref);
+    console.log('Download URL obtained:', downloadURL);
+    
     return downloadURL;
   } catch (error) {
     console.error('Error uploading file:', error);
-    throw new Error('Failed to upload file');
+    
+    // Provide more specific error messages
+    if (error instanceof Error) {
+      if (error.message.includes('storage/unauthorized')) {
+        throw new Error('Upload failed: Firebase Storage rules deny access. Please check your Storage rules in Firebase Console.');
+      } else if (error.message.includes('storage/unknown')) {
+        throw new Error('Upload failed: Unknown Firebase Storage error. Check your Firebase configuration.');
+      } else if (error.message.includes('storage/object-not-found')) {
+        throw new Error('Upload failed: Storage bucket not found. Ensure Firebase Storage is enabled.');
+      } else if (error.message.includes('storage/bucket-not-found')) {
+        throw new Error('Upload failed: Storage bucket not found. Check your Firebase project configuration.');
+      }
+      throw new Error(`Upload failed: ${error.message}`);
+    }
+    
+    throw new Error('Failed to upload file: Unknown error');
   }
 }
 
@@ -32,14 +70,11 @@ export async function uploadFile(file: File, path: string): Promise<string> {
  */
 export async function uploadDefaultCover(file: File): Promise<string> {
   try {
-    const storageRef = ref(storage, 'placeholders/cover.png');
-    const snapshot = await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(snapshot.ref);
-    console.log('Default cover uploaded successfully:', downloadURL);
-    return downloadURL;
+    console.log('Starting default cover upload...');
+    return await uploadFile(file, 'placeholders/cover.png');
   } catch (error) {
     console.error('Error uploading default cover:', error);
-    throw new Error('Failed to upload default cover');
+    throw error; // Re-throw the detailed error from uploadFile
   }
 }
 
